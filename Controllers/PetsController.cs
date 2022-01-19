@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetAdoptionApi.Models;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 
 namespace PetAdoptionApi.Controllers
 {
@@ -37,7 +38,8 @@ namespace PetAdoptionApi.Controllers
 
             return pet;
         }
-
+        //Using alpha because of an issue where the path was too similar to GetByById
+        //Since the path of GetPetsByType will never contain an integer, alpha seems to be the best fix
         [HttpGet("{type:alpha}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<Pet>> GetPetsByType(string type)
@@ -50,6 +52,55 @@ namespace PetAdoptionApi.Controllers
             }
 
             return pets.ToList<Pet>();
+        }
+
+        [HttpGet]
+        [Route("maxAge")]
+        public long GetMaxAge()
+        {
+            var oldestPet = _petList.Pets.Max(p => p.Age);
+
+            return oldestPet;
+        }
+
+        [HttpGet]
+        [Route("minAge")]
+        public long GetMinAge()
+        {
+            var youngestPet = _petList.Pets.Min(p => p.Age);
+
+            return youngestPet;
+        }
+
+        [HttpGet]
+        [Route("petBreed/{type:alpha}")]
+        public ActionResult<List<string>> GetPetBreeds(string type)
+        {
+            var petBreeds = _petList.Pets.Where(p => p.Pet_Type == type).Select(b => b.Breed).Distinct();
+            return petBreeds.ToList();
+        }
+        [HttpGet]
+        [Route("featured")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<Pet>> GetFeaturedPets(string type)
+        {
+            var pets = _petList.Pets.Where(p => p.Featured == true);
+
+            if(pets == null)
+            {
+                return NotFound();
+            }
+
+            return pets.ToList<Pet>();
+        }
+
+        [HttpPost]
+        [Route("filterPets/{type:string}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<Pet>> FilterPets(string filters){
+            dynamic filterData = Json.Decode(filters);
+            
+            return null;
         }
         
     }
