@@ -4,8 +4,7 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetAdoptionApi.Models;
-using System.Threading.Tasks;
-using System.Web.Helpers;
+using Newtonsoft.Json;
 
 namespace PetAdoptionApi.Controllers
 {
@@ -94,13 +93,88 @@ namespace PetAdoptionApi.Controllers
             return pets.ToList<Pet>();
         }
 
-        [HttpPost]
-        [Route("filterPets/{type:string}")]
+        [HttpGet]
+        [Route("filterPets/{filters}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<Pet>> FilterPets(string filters){
-            dynamic filterData = Json.Decode(filters);
+            FilterData userFilters = JsonConvert.DeserializeObject<FilterData>(filters);
+            List<Pet> toReturn = new List<Pet>();
+
+            var cats = _petList.Pets.Where(t => t.Pet_Type == "cat");
+            var dogs = _petList.Pets.Where(t => t.Pet_Type == "dog");;
+            var birds = _petList.Pets.Where(t => t.Pet_Type == "bird");;
+            var reptiles = _petList.Pets.Where(t => t.Pet_Type == "reptile");;
+            var other = _petList.Pets.Where(t => t.Pet_Type == "other");
+
+            if(!userFilters.Cats && !userFilters.Dogs && !userFilters.Birds && !userFilters.Reptiles && !userFilters.Other)
+            {
+                return _petList.Pets.ToList();
+            }
+
+            if(userFilters.Cats) {
+                foreach(var cat in cats.ToList())
+                    toReturn.Add(cat);
+            }
+            if(userFilters.Dogs) {
+                foreach(var dog in dogs.ToList())
+                    toReturn.Add(dog);
+            }
+            if(userFilters.Birds) {
+                foreach(var bird in birds.ToList())
+                    toReturn.Add(bird);
+            }
+            if(userFilters.Reptiles) {
+                foreach(var rep in reptiles.ToList())
+                    toReturn.Add(rep);
+            }
+            if(userFilters.Other) {
+                foreach(var o in other.ToList())
+                    toReturn.Add(o);
+            }
+            //discrete math finally pays off
+            var petsAge = _petList.Pets.Where(p => p.Age < userFilters.Max_Age);
+            IEnumerable<Pet> petsThatFit = petsAge.ToList().AsEnumerable();
+            petsThatFit = petsThatFit.Intersect(toReturn);
+            if(userFilters.Max_Age != 0)
+            {
+                toReturn = petsThatFit.ToList();
+            }
+
+            if( userFilters.Max_Price != 0)
+            {
+                var petsPrice = _petList.Pets.Where(p => p.Price < userFilters.Max_Price);
+                petsThatFit = petsPrice.ToList().AsEnumerable();
+                petsThatFit = petsThatFit.Intersect(toReturn);
+                toReturn = petsThatFit.ToList();
+            }
             
-            return null;
+            if(userFilters.City != "" && userFilters.State != "")
+            {
+                var petsLocation = _petList.Pets.Where(p => p.City == userFilters.City && p.State == userFilters.State);
+                petsThatFit = petsLocation.ToList().AsEnumerable();
+                petsThatFit = petsThatFit.Intersect(toReturn);
+                toReturn = petsThatFit.ToList();
+            }
+                
+            if(userFilters.Gender != "")
+            {
+                if(userFilters.Gender == "male")
+                {
+                    var petsGender = _petList.Pets.Where(p => p.Gender == "male");
+                    petsThatFit = petsGender.ToList().AsEnumerable();
+                    petsThatFit = petsThatFit.Intersect(toReturn);
+                    toReturn = petsThatFit.ToList();
+                }
+                else if(userFilters.Gender == "female")
+                {
+                    var petsGender = _petList.Pets.Where(p => p.Gender == "female");
+                    petsThatFit = petsGender.ToList().AsEnumerable();
+                    petsThatFit = petsThatFit.Intersect(toReturn);
+                    toReturn = petsThatFit.ToList();
+                }
+            }
+            
+            return toReturn;
         }
         
     }
