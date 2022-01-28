@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 
 using Microsoft.EntityFrameworkCore;
 using PetAdoptionApi.Models;
@@ -34,6 +35,9 @@ namespace PetAdoptionApi
             services.AddDbContext<PetsContext>(opt => 
                 opt.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString)));
             
+            services.AddDbContext<UsersContext>(opt => 
+                opt.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString)));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +47,8 @@ namespace PetAdoptionApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
+           
             app.UseCors(x => x
             .AllowAnyOrigin()
             .AllowAnyMethod()

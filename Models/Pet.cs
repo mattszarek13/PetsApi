@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PetAdoptionApi.Models
 {
+    [Table("pets")]
     public class Pet
     {
         public long Id { get; set; }

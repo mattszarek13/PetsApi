@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
 namespace PetAdoptionApi.Models
 {
@@ -14,8 +13,6 @@ namespace PetAdoptionApi.Models
         public bool Reptiles { get; set; }
         [JsonProperty("other")]
         public bool Other { get; set; }
-
-
         [JsonProperty("maximumAge")]
         public int Max_Age { get; set; }
         [JsonProperty("maximumPrice")]

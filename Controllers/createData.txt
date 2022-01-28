@@ -1,149 +1,245 @@
-/*_petList.Add(
-                new Pet()
-                {
-                    Id = 1,
-                    Name = "Fluffy",
-                    Age = 3,
-                    Gender = "female",
-                    Bio = "Hi, I'm Fluffy",
-                    Pet_Type = "dog",
-                    Picture = "https://purewows3.imgix.net/images/articles/2021_03/Fluffy_Dog_Breeds-Pomeranian_.jpg?auto=format,compress&cs=strip"
-                });*/
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 2,
-                    Name = "Bruce",
-                    Age = 6,
-                    Gender = "male",
-                    Bio = "Hi, I'm Bruce",
-                    Pet_Type = "dog",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/d/d0/German_Shepherd_-_DSC_0346_%2810096362833%29.jpg"
-                });
+# In theory, this should create and populate the data necessary for the application
 
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 3,
-                    Name = "Max",
-                    Age = 1,
-                    Gender = "male",
-                    Bio = "Hi, I'm Max",
-                    Pet_Type = "dog",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/DOG-HUSKY_23JUL00.jpg/330px-DOG-HUSKY_23JUL00.jpg"
-                });
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 4,
-                    Name = "Mittens",
-                    Age = 2,
-                    Gender = "male",
-                    Bio = "Hi, I'm Mittins",
-                    Pet_Type = "cat",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Socks-clinton.jpg"
-                });
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 5,
-                    Name = "Gandalf",
-                    Age = 10,
-                    Gender = "male",
-                    Bio = "Hi, I'm Gandalf",
-                    Pet_Type = "cat",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/IC_Blue_Melody_Flipper_CHA_male_EX1_CACIB.jpg/330px-IC_Blue_Melody_Flipper_CHA_male_EX1_CACIB.jpg"
-                });
+CREATE DATABASE IF NOT EXISTS pet_adoption;
 
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 6,
-                    Name = "Marie",
-                    Age = 3,
-                    Gender = "female",
-                    Bio = "Hi, I'm Marie",
-                    Pet_Type = "cat",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Calico_cat_phoebe.jpg/330px-Calico_cat_phoebe.jpg"
-                });
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 7,
-                    Name = "Princess",
-                    Age = 2,
-                    Gender = "female",
-                    Bio = "Hi, I'm Princess",
-                    Pet_Type = "cat",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/WhiteCat.jpg/330px-WhiteCat.jpg"
-                });
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 8,
-                    Name = "Crackers",
-                    Age = 4,
-                    Gender = "female",
-                    Bio = "Hi, I'm Crackers",
-                    Pet_Type = "bird",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/a/aa/Sirocco_full_length_portrait.jpg"
-                });
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 9,
-                    Name = "Wings",
-                    Age = 7,
-                    Gender = "male",
-                    Bio = "Hi, I'm Wings",
-                    Pet_Type = "bird",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Probosciger_aterrimus-20030511.jpg/330px-Probosciger_aterrimus-20030511.jpg"
-                });
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 10,
-                    Name = "Big Bird",
-                    Age = 9999,
-                    Gender = "Unkown",
-                    Bio = "Help us please he's coming",
-                    Pet_Type = "bird",
-                    Picture = "https://upload.wikimedia.org/wikipedia/en/thumb/b/b3/Flickr_Big_Bird.jpg/225px-Flickr_Big_Bird.jpg"
-                });
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 11,
-                    Name = "Smaug",
-                    Age = 6211,
-                    Gender = "male",
-                    Bio = "Hi, I'm Smaug",
-                    Pet_Type = "reptile",
-                    Picture = "https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Smaug_%28Peter_Jackson_Hobbit_Trilogy%29.jpg/330px-Smaug_%28Peter_Jackson_Hobbit_Trilogy%29.jpg"
-                });
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 12,
-                    Name = "Gordon",
-                    Age = 4,
-                    Gender = "male",
-                    Bio = "Hi, I'm Gordon",
-                    Pet_Type = "reptile",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Phelsuma_l._laticauda.jpg/330px-Phelsuma_l._laticauda.jpg"
-                });
-            _petList.Add(
-                new Pet()
-                {
-                    Id = 13,
-                    Name = "Mark",
-                    Age = 37,
-                    Gender = "male",
-                    Bio = "I am a human",
-                    Pet_Type = "other",
-                    Picture = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg/330px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg"
-                });
+CREATE TABLE IF NOT EXISTS `pets` (
+  `id` int NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `age` int DEFAULT NULL,
+  `gender` varchar(8) DEFAULT NULL,
+  `bio` varchar(255) DEFAULT NULL,
+  `pet_type` varchar(20) DEFAULT NULL,
+  `picture` varchar(1024) DEFAULT NULL,
+  `breed` varchar(50) DEFAULT NULL,
+  `featured` tinyint(1) DEFAULT NULL,
+  `price` decimal(9,2) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
 
-            _petList.SaveChanges();
-                
-            
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(1, 'Fluffy', 3, 'Female', 'Hi, I\'m Fluffy', 'dog', 'https://purewows3.imgix.net/images/articles/2021_03/Fluffy_Dog_Breeds-Pomeranian_.jpg?auto=format,compress&cs=strip', 'Pomeranian', 0, 100.00, 'Lexington', 'KY');
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(2, 'Bruce', 6, 'Male', 'Hi, I\'m Bruce', 'dog', 'https://upload.wikimedia.org/wikipedia/commons/d/d0/German_Shepherd_-_DSC_0346_%2810096362833%29.jpg', 'German Shepard', 1, 900.00, 'Louisville', 'KY');
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(3, 'Max', 1, 'Male', 'Hi, I\'m Max', 'dog', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/DOG-HUSKY_23JUL00.jpg/330px-DOG-HUSKY_23JUL00.jpg', 'Husky', 0, 600.00, 'Frankfort', 'KY'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(4, 'Mittens', 2, 'Male', 'Hi, I\'m Mittins', 'cat', 'https://upload.wikimedia.org/wikipedia/commons/5/5a/Socks-clinton.jpg', 'Tuxedo', 0, 450.00, 'Lexington', 'KY'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(5, 'Gandalf', 10, 'Male', 'Hi, I\'m Gandalf', 'cat', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/IC_Blue_Melody_Flipper_CHA_male_EX1_CACIB.jpg/330px-IC_Blue_Melody_Flipper_CHA_male_EX1_CACIB.jpg', 'Chartreaux', 1, 200.00, 'Lexington', 'KY'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(6, 'Marie', 3, 'Female', 'Hi, I\'m Marie', 'cat', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Calico_cat_phoebe.jpg/330px-Calico_cat_phoebe.jpg', 'Calico', 1, 1000.00, 'Louisville', 'KY'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(7, 'Princess', 2, 'Female', 'Hi, I\'m Princess', 'cat', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/WhiteCat.jpg/330px-WhiteCat.jpg', 'White', 1, 150.00, 'Cincinnati', 'OH'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(8, 'Crackers', 4, 'Female', 'Hi, I\'m Crackers', 'bird', 'https://upload.wikimedia.org/wikipedia/commons/a/aa/Sirocco_full_length_portrait.jpg', 'Owl Parrot', 0, 200.00, 'Nashville', 'TN'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(9, 'Wings', 7, 'Male', 'Hi, I\'m Wings', 'bird', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Probosciger_aterrimus-20030511.jpg/330px-Probosciger_aterrimus-20030511.jpg', 'Cockatoo', 0, 300.00, 'Cincinnati', 'OH'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(10, 'Big Bird', 9999, 'Unkown', 'Help us please he\'s coming', 'bird', 'https://upload.wikimedia.org/wikipedia/en/thumb/b/b3/Flickr_Big_Bird.jpg/225px-Flickr_Big_Bird.jpg', 'Unknown', 0, 0.00, 'New York', 'NY'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(11, 'Smaug', 6211, 'Male', 'Hi, I\'m Smaug', 'reptile', 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Smaug_%28Peter_Jackson_Hobbit_Trilogy%29.jpg/330px-Smaug_%28Peter_Jackson_Hobbit_Trilogy%29.jpg', 'Fire-Drake', 0, 1.00, 'Lexington', 'KY'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(12, 'Gordon', 4, 'Male', 'Hi, I\'m Gordon', 'reptile', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Phelsuma_l._laticauda.jpg/330px-Phelsuma_l._laticauda.jpg', 'Gecko', 0, 750.00, 'Lousiville', 'KY'
+);
+INSERT INTO `pet_adoption`.`pets`
+(`id`,
+`name`,
+`age`,
+`gender`,
+`bio`,
+`pet_type`,
+`picture`,
+`breed`,
+`featured`,
+`price`,
+`city`,
+`state`)
+VALUES
+(13, 'Mark', 37, 'Human', 'I am a human', 'other', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg/330px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg', 'Human', 0, 0.00, 'Palo Alto', 'CA'
+);
+
+CREATE TABLE IF NOT EXISTS `pet_adoption`.`users` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `password` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`));
+
+INSERT INTO `pet_adoption`.`users`
+(
+  `id`,
+  `userName`,
+  `password`
+)
+VALUES
+(
+  1,
+  "admin",
+  "password"
+);
