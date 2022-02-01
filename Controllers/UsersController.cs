@@ -23,6 +23,7 @@ namespace PetAdoptionApi.Controllers
         public bool AddUser(string userInfo)
         {
             User user = JsonConvert.DeserializeObject<User>(userInfo);
+            //hash password
             if(_userList.Users.Where(u => u.UserName == user.UserName).ToList().Count > 0)
                 return false;
 
@@ -35,6 +36,7 @@ namespace PetAdoptionApi.Controllers
         public bool VerifyUser(string userInfo)
         {
             User user = JsonConvert.DeserializeObject<User>(userInfo);
+            //hash password
             if(_userList.Users.Where(u => u.UserName == user.UserName && u.Password == user.Password).ToList().Count > 0)
                 return true;
 
