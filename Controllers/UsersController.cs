@@ -45,7 +45,7 @@ namespace PetAdoptionApi.Controllers
             user.Password = hashedPw;
             if(_userList.Users.Where(u => u.UserName == user.UserName).ToList().Count > 0)
                 return false;
-
+            user.Id = _userList.Users.Count() + 1;
             _userList.Users.Add(user);
             _userList.SaveChanges();
             return true;
