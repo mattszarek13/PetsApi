@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetAdoptionApi.Models;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
+using System.Text;
 namespace PetAdoptionApi.Controllers
 {
     [ApiController]
@@ -18,16 +20,34 @@ namespace PetAdoptionApi.Controllers
             _userList = context;
         }
 
+        public static byte[] GetHash(string inputString)
+        {
+            using (HashAlgorithm algorithm = SHA256.Create())
+                return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+        }
+
+        public static string GetHashString(string inputString)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in GetHash(inputString))
+                sb.Append(b.ToString("X2"));
+
+            return sb.ToString();
+        }
+
         [HttpGet]
         [Route("addUser/{userInfo}")]
         public bool AddUser(string userInfo)
         {
             User user = JsonConvert.DeserializeObject<User>(userInfo);
             //hash password
+            string hashedPw = GetHashString(user.Password);
+            user.Password = hashedPw;
             if(_userList.Users.Where(u => u.UserName == user.UserName).ToList().Count > 0)
                 return false;
 
             _userList.Users.Add(user);
+            _userList.SaveChanges();
             return true;
         }
 
@@ -37,6 +57,8 @@ namespace PetAdoptionApi.Controllers
         {
             User user = JsonConvert.DeserializeObject<User>(userInfo);
             //hash password
+            string hashedPw = GetHashString(user.Password);
+            user.Password = hashedPw;
             if(_userList.Users.Where(u => u.UserName == user.UserName && u.Password == user.Password).ToList().Count > 0)
                 return true;
 
